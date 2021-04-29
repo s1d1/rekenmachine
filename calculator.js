@@ -6,85 +6,55 @@
 // - clear-all 
 // - update display
 
-// object that can be updated
-const calculator = {
-    displayValue: '0',
-    first: null,
-    wait_on_second: false,
-    operator: null,
-  };
 
-function inputDigit(digit) {
-    const {displayValue} = calculator;
-    // change displayValue on calculator to updated displayvalue
-    // if displayvalue is 0, replace it with the digit, otherwise append digit to the displayvalue
-    calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
-}
+// - lijst bijhouden en elke keer als er iets wordt ingetypt dan dat toevoegen aan de array
+// - modifiers die ervoor zorgen hoe lang een variabele bestaat
+// - op het moment dat je een variabel aanmaakt zonder iets ervoor, dan is het een global (die bestaat voor de gehele tijd van het programma)
+// - je hebt een aantal keywords: var = maakt een variabel zoals je gewend bent in python (dus hij bestaat alleen binnen het programma)
+// - keyword let = wordt gebruikt om variabelen aan te maken zoals in C. Variabel bestaat dan alleen binnen een statement/loop
+// - keyword const = hetzelfde als let, maar ook constant dus je kan het niet meer aanpassen
+// - als je een variabel gebruikt: probeer const, probeer dan let, dan var, dan globals
 
-function inputDecimal(dot) {
-    // if the displayvalue of the calculator does not already contain a decimal, add it 
-    if (!calculator.displayValue.includes(dot)) {
-        calculator.displayValue += dot;
-    }
-}
+// const display = document.querySelector('screen');
+const buttons = document.querySelectorAll('button');
+formula = [];
 
-function handleOperator(nextOperator) {
-    const {first, displayValue, operator} = calculator;
-
-    // make string displayValue a float
-    const inputValue = parseFloat(displayValue);
-
-
-}
-
-function updateDisplay() {
-    // select the element in HTML that is the screen (class)
-    const display = document.querySelector('.calculator-screen');
-
-    // update that element with value of displayValue 
-    display.value = calculator.displayValue;
-}
-
-updateDisplay();
-
-const keys = document.querySelector('.calculator-keys');
-// set an eventlistener for when type 'click' that will dispatch an event that is explained after the arrow
-keys.addEventListener('click', (event) => {
-    // set the clicked element as target
-    const { target } = event;
-
-    // check if target is a button
-    // if not, exit
-    if (!target.matches('button')) {
-        return;
-    }
-
-    // if target is button
-    // print string for check
-
-    // classlist.contains checks for string ('operator') in all the classes within the target 
-    if (target.classList.contains('key-operator')) {
-        console.log('key-operator', target.value);
-        return;
-    }
-
-    if (target.classList.contains('decimal')) {
-        inputDecimal(target.value);
-        updateDisplay();
-        return;
-    }
-
-    if (target.classList.contains('clear')) {
-        console.log('clear', target.value);
-        return;
-    }
-
-    if (target.classList.contains('key-equal')) {
-        console.log('key-equal', target.value);
-        return;
-    }
-
-    inputDigit(target.value);
-    updateDisplay();
-
+buttons.forEach(function(button) {
+    button.addEventListener('click', calculate);
 });
+
+function calculate(event) {
+    const button_value = event.target.value;
+
+    if (event.target.classList.contains('number')) {
+        formula.push(button_value);
+        console.log(button_value);
+    }
+
+    else if (event.target.classList.contains('decimal')) {
+        formula.push(button_value);
+        console.log(button_value);
+    }
+
+    else if (event.target.classList.contains('operator')) {
+        formula.push(button_value);
+        console.log(button_value);
+    }
+
+    else if (event.target.classList.contains('clear')) {
+        formula.length = 0;
+        console.log(button_value);
+    }
+
+    else {
+        console.log(JSON.stringify(formula));
+        calculate();
+    }
+}
+
+function calculate(event){
+    for (let i = 0; i < formula.length; i++){
+
+    }
+}
+
