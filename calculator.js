@@ -1,60 +1,120 @@
-// functions to write:
-// - input numbers
-// - input decimal
-// - input operators
-// - calculate
-// - clear-all 
-// - update display
-
-
-// - lijst bijhouden en elke keer als er iets wordt ingetypt dan dat toevoegen aan de array
-// - modifiers die ervoor zorgen hoe lang een variabele bestaat
-// - op het moment dat je een variabel aanmaakt zonder iets ervoor, dan is het een global (die bestaat voor de gehele tijd van het programma)
-// - je hebt een aantal keywords: var = maakt een variabel zoals je gewend bent in python (dus hij bestaat alleen binnen het programma)
-// - keyword let = wordt gebruikt om variabelen aan te maken zoals in C. Variabel bestaat dan alleen binnen een statement/loop
-// - keyword const = hetzelfde als let, maar ook constant dus je kan het niet meer aanpassen
-// - als je een variabel gebruikt: probeer const, probeer dan let, dan var, dan globals
-
-// const display = document.querySelector('screen');
 const buttons = document.querySelectorAll('button');
 formula = [];
 
 buttons.forEach(function(button) {
-    button.addEventListener('click', calculate);
+    button.addEventListener('click', get_formula);
 });
 
-function calculate(event) {
+function get_formula(event) {
     const button_value = event.target.value;
 
     if (event.target.classList.contains('number')) {
         formula.push(button_value);
-        console.log(button_value);
+        document.getElementById("screen").value = update_screen('number', button_value);
     }
 
     else if (event.target.classList.contains('decimal')) {
         formula.push(button_value);
-        console.log(button_value);
+        document.getElementById("screen").value = update_screen('decimal', button_value);
     }
 
     else if (event.target.classList.contains('operator')) {
         formula.push(button_value);
-        console.log(button_value);
+        document.getElementById("screen").value = update_screen('operator', button_value);
     }
 
     else if (event.target.classList.contains('clear')) {
         formula.length = 0;
-        console.log(button_value);
+        document.getElementById("screen").value = update_screen('clear', button_value);
+    }
+
+    else if (event.target.classList.contains('equal')) {
+        solution = calculate(event);
+        display_solution(solution);
+    }
+}
+
+function update_screen(category, val) {
+    screen_display = document.getElementById("screen").value;
+
+    if (category == 'number') {
+        screen_display = val;
+    }
+    else if (category == 'decimal') {
+        screen_display = val;
+    }
+    else if (category == 'operator') {
+        screen_display = val;
+    }
+    else { 
+        screen_display = '0';
+    }
+    return screen_display;
+}
+
+function display_solution(solution) {
+    document.getElementById("screen").value = solution;
+}
+
+function calculate(event) {
+    // bewaar index van operator
+
+    let index_operator = 0;
+    for (let i = 0; i < formula.length; i++) {
+        if (formula[i] == '+') {
+            operator = '+';
+            index_operator = i;
+            continue;
+        }
+        else if (formula[i] == '-') {
+            operator = '-'
+            index_operator = i;
+            continue;
+        }
+        else if (formula[i] == '/') {
+            operator = '/';
+            index_operator = i;
+            continue;
+        }
+        else if (formula[i] == '*') {
+            operator = '*';
+            index_operator = i;
+            continue;
+        }
+    }
+
+    // bewaar eerste en tweede nummer 
+    let first_number = 0;
+    number = []
+    for (let j = 0; j < index_operator; j++) {
+        number.push(formula[j]);
+        x = number.join('');
+        first_number = parseFloat(x)
+    }
+
+    let second_number = 0;
+    number_two =[];
+    for (let k = index_operator + 1; k < formula.length; k++) {
+        number_two.push(formula[k]);
+        y = number_two.join('');
+        second_number = parseFloat(y)
+    }
+
+    if (operator == '+') {
+        solution = first_number + second_number;
+    }
+
+    else if (operator == '-') {
+        solution = first_number - second_number;
+    }
+
+    else if (operator == '/') {
+        solution = first_number / second_number;
     }
 
     else {
-        console.log(JSON.stringify(formula));
-        calculate();
+        solution = first_number * second_number;
     }
+
+    return solution;
 }
-
-function calculate(event){
-    for (let i = 0; i < formula.length; i++){
-
-    }
-}
-
